@@ -40,17 +40,18 @@ public class UserService {
 
     public UserResponse login(UserRequestLogin request) {
         String email = request.email();
-        String password = request.password();
+        String password = (request.password());
         UserModel user = userRepository.findByEmail(email);
-        String jwtToken = jwtUtils.generateToken(email);
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
-        } else {
-            return new UserResponse(user.getFirstName(),
-                    user.getLastName(),
-                    user.getUserName(),
-                    user.getEmail(),
-                    jwtToken);
         }
+        String jwtToken = jwtUtils.generateToken(email);
+
+        // Return user details and token on successful login
+        return new UserResponse(user.getFirstName(),
+                user.getLastName(),
+                user.getUserName(),
+                user.getEmail(),
+                jwtToken);
     }
 }

@@ -2,6 +2,6 @@ package com.E_Commerce.API.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<ProductModel, String> {
+public interface ProductRepository extends JpaRepository<ProductModel, Long> {
 
 }
