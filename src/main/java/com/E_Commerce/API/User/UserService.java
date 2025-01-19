@@ -4,6 +4,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.E_Commerce.API.Authentication.JwtUtils;
+import com.E_Commerce.API.Cart.CartModel;
+import com.E_Commerce.API.Cart.CartRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,15 +13,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse registerUser(UserRequestDto request) {
+        // Check if user already exists
         UserModel userEmail = userRepository.findByEmail(request.getEmail());
         UserModel userUserName = userRepository.findByUserName(request.getUserName());
         if (userEmail != null || userUserName != null) {
             throw new RuntimeException("User already exists");
         }
+
+        // Create a new user
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         UserModel user = UserModel
                 .builder()
@@ -30,6 +36,15 @@ public class UserService {
                 .password(encodedPassword)
                 .build();
         userRepository.save(user);
+
+        // Create a cart for the user
+        CartModel cart = CartModel
+                .builder()
+                .user(user)
+                .build();
+        cartRepository.save(cart);
+        
+        // Return user details and token on successful registration
         String jwtToken = jwtUtils.generateToken(request.getEmail());
         return new UserResponse(user.getFirstName(),
                 user.getLastName(),
@@ -54,4 +69,6 @@ public class UserService {
                 user.getEmail(),
                 jwtToken);
     }
+
+    
 }

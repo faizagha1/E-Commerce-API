@@ -2,12 +2,9 @@ package com.E_Commerce.API.User;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.E_Commerce.API.Cart.CartModel;
 import com.E_Commerce.API.Order.OrderModel;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,11 +35,12 @@ public class UserModel {
 
     private String email;
     private String password;
+    @Builder.Default
     private boolean isEmailVerified = false;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private CartModel cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderModel> orders;
 }

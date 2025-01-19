@@ -2,12 +2,11 @@ package com.E_Commerce.API.Cart;
 
 import java.util.List;
 
-
-import com.E_Commerce.API.Product.ProductModel;
 import com.E_Commerce.API.User.UserModel;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,12 +28,17 @@ public class CartModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<ProductModel> products;
 
-    private Double totalPrice;
-    private Integer totalItems;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CartItem> items;
+
+    @Builder.Default
+    private Double totalPrice = 0.0;
+
+    @Builder.Default
+    private Integer totalItems = 0;
 
     @OneToOne
     private UserModel user;
+
 }

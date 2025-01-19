@@ -2,7 +2,6 @@ package com.E_Commerce.API.Product;
 
 import java.util.List;
 
-import com.E_Commerce.API.Cart.CartModel;
 import com.E_Commerce.API.Order.OrderModel;
 
 import jakarta.persistence.ElementCollection;
@@ -10,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,9 +37,6 @@ public class ProductModel {
     private Integer productStock;
     private String productImage;
 
-    @ManyToOne
-    private CartModel cart;
-
-    @ManyToOne
-    private OrderModel order;
+    @ManyToMany(mappedBy = "products")
+    private List<OrderModel> orders;
 }

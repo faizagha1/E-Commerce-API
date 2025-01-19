@@ -3,7 +3,6 @@ package com.E_Commerce.API.Payment;
 import java.util.List;
 
 import com.E_Commerce.API.Order.OrderModel;
-import com.E_Commerce.API.Product.ProductModel;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
