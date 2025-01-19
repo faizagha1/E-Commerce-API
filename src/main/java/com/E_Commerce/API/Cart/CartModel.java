@@ -2,6 +2,7 @@ package com.E_Commerce.API.Cart;
 
 import java.util.List;
 
+import com.E_Commerce.API.Order.OrderModel;
 import com.E_Commerce.API.User.UserModel;
 
 import jakarta.persistence.CascadeType;
@@ -41,4 +42,6 @@ public class CartModel {
     @OneToOne
     private UserModel user;
 
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderModel> orders;
 }

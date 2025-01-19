@@ -2,6 +2,7 @@ package com.E_Commerce.API.Order;
 
 import java.util.List;
 
+import com.E_Commerce.API.Cart.CartModel;
 import com.E_Commerce.API.Product.ProductModel;
 import com.E_Commerce.API.User.UserModel;
 
@@ -29,6 +30,9 @@ public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
+    private CartModel cart;
 
     @ManyToOne
     private UserModel user;
